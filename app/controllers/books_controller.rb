@@ -3,11 +3,11 @@ class BooksController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    render json: Book.all
+    render json: Book.all, include: { author: { only: [:first_name, :last_name] } }
   end
 
   def show
-    render json: @book
+    render json: @book, include: { author: { only: [:first_name, :last_name] } }
   end
 
   def create
