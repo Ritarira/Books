@@ -29,8 +29,12 @@ class AuthorsController < ApplicationController
   end
 
   def destroy
-    @author.destroy
-    head 204
+    if referential_integrity_errors = check_referential_integrity
+      render json: { errors: referential_integrity_errors }, status: :unprocessable_entity
+    else
+      @author.destroy
+      head 204
+    end
   end
 
   private
@@ -41,5 +45,9 @@ class AuthorsController < ApplicationController
 
   def author_params
     params.permit(:first_name, :last_name)
+  end
+
+  def check_referential_integrity
+    'Author has books' if @author.books.any?
   end
 end
