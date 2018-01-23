@@ -3,11 +3,11 @@ class AuthorsController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    render json: Author.all
+    render json: Author.all, each_serializer: AuthorSerializer
   end
 
   def show
-    render json: @author
+    render json: @author, serializer: AuthorSerializer
   end
 
   def create
